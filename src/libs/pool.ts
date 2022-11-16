@@ -1,11 +1,15 @@
+import { ITask } from "@/types";
 class Pool {
   client: any;
   methods: any;
-  tasks: any;
 
   constructor(client: any, methods?: any) {
     this.client = client;
     this.client.connect();
+    if (methods) {
+      this.methods = methods;
+    }
+    console.log(`Pool initialized with ${this.methods ? Object.keys(this.methods)?.length : 0} method(s)`);
   }
 
   // Register a method for a specific task
@@ -18,13 +22,13 @@ class Pool {
   }
 
   // Add a task to the pool, must refer to a specific method
-  async addTask(value: string) {
-    await this.client.sAdd("new:task:index", JSON.stringify({ value }));
+  async addTask(task: ITask) {
+    await this.client.sAdd("new:task:index", JSON.stringify(task));
   }
 
   // Get pending tasks in the pool
   async getTasks() {
-    const members = await this.client.sMembers("new:task:index");
+    const members: ITask[] = await this.client.sMembers("new:task:index");
     console.log(members);
     return members;
   }
