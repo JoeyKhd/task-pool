@@ -1,7 +1,11 @@
 declare class Pool {
-    constructor();
-    registerTask(): void;
-    addTask(): void;
-    getTasks(): void;
+    client: any;
+    methods: any;
+    tasks: any;
+    constructor(client: any, methods?: any);
+    registerMethods(methods: any): void;
+    getMethods(): any;
+    addTask(value: string): Promise<void>;
+    getTasks(): Promise<any>;
 }
 export default Pool;
